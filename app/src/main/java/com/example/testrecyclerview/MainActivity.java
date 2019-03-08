@@ -14,9 +14,10 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
-    MyRecyclerViewAdapter adapter;
-    RecyclerView recyclerView;
-    ItemTouchHelper itemTouchHelper;
+    private MyRecyclerViewAdapter adapter;
+    private RecyclerView recyclerView;
+    private ItemTouchHelper itemTouchHelper;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,7 +30,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void initViews(){
         // set up the RecyclerView
-        RecyclerView recyclerView = findViewById(R.id.rv);
+        recyclerView = findViewById(R.id.rv);
         recyclerView.setHasFixedSize(true);
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(mLayoutManager);
@@ -72,11 +73,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
 
             @Override
-            public boolean isItemViewSwipeEnabled() {
-                return true;
-            }
-
-            @Override
             public void onChildDraw(Canvas c, RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
                 if (actionState == ItemTouchHelper.ACTION_STATE_SWIPE) {
                     float alpha = 1 - (Math.abs(dX) / recyclerView.getWidth());
@@ -95,4 +91,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View v) {
 
     }
+
+
 }
