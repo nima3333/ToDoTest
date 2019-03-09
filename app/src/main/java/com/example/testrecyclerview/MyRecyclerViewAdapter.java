@@ -16,21 +16,17 @@ import java.util.List;
 public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAdapter.ViewHolder> {
 
     private List<String> mData;
-    private LayoutInflater mInflater;
     private ItemClickListener mClickListener;
-    private Context context;
 
     // data is passed into the constructor
-    MyRecyclerViewAdapter(Context context, List<String> data) {
-        this.mInflater = LayoutInflater.from(context);
+    MyRecyclerViewAdapter(List<String> data) {
         this.mData = data;
-        this.context = context;
     }
 
     // inflates the row layout from xml when needed
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = mInflater.inflate(R.layout.row_layout, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.row_layout, parent, false);
         return new ViewHolder(view);
     }
 

@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         animalNames.add("3");
         animalNames.add("4");
         animalNames.add("5");
-        adapter = new MyRecyclerViewAdapter(this, animalNames);
+        adapter = new MyRecyclerViewAdapter(animalNames);
         //adapter.setClickListener(this);
         recyclerView.setAdapter(adapter);
 
