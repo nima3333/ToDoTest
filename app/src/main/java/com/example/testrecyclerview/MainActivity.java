@@ -32,7 +32,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         // set up the RecyclerView
         recyclerView = findViewById(R.id.rv);
         recyclerView.setHasFixedSize(true);
-        LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);
+        LinearLayoutManager mLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(mLayoutManager);
 
         // data to populate the RecyclerView with
@@ -58,28 +58,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void initSwipe(){
-        ItemTouchHelper.SimpleCallback simpleItemTouchCallback = new ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP | ItemTouchHelper.DOWN, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
+        ItemTouchHelper.SimpleCallback simpleItemTouchCallback =
+                new ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP | ItemTouchHelper.DOWN, ItemTouchHelper.LEFT) {
 
-            @Override
-            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
-                adapter.moveItem(viewHolder.getAdapterPosition(), target.getAdapterPosition());
-                Toast.makeText(MainActivity.this, "right", Toast.LENGTH_SHORT).show();
-                return true;
-            }
-
-            @Override
-            public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
-                Toast.makeText(MainActivity.this, "right", Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onChildDraw(Canvas c, RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
-                if (actionState == ItemTouchHelper.ACTION_STATE_SWIPE) {
-                    float alpha = 1 - (Math.abs(dX) / recyclerView.getWidth());
-                    viewHolder.itemView.setAlpha(alpha);
+                @Override
+                public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder source, RecyclerView.ViewHolder target) {
+                    adapter.moveItem(source.getAdapterPosition(), target.getAdapterPosition());
+                    Toast.makeText(MainActivity.this, "TestMove", Toast.LENGTH_SHORT).show();
+                    return true;
                 }
-                super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
-            }
+
+                @Override
+                public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
+                    adapter.removeItem(viewHolder.getAdapterPosition());
+                }
+
         };
 
         itemTouchHelper = new ItemTouchHelper(simpleItemTouchCallback);

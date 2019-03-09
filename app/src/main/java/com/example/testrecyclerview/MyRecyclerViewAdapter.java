@@ -7,7 +7,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAdapter.ViewHolder> {
@@ -15,11 +18,13 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAd
     private List<String> mData;
     private LayoutInflater mInflater;
     private ItemClickListener mClickListener;
+    private Context context;
 
     // data is passed into the constructor
     MyRecyclerViewAdapter(Context context, List<String> data) {
         this.mInflater = LayoutInflater.from(context);
         this.mData = data;
+        this.context = context;
     }
 
     // inflates the row layout from xml when needed
@@ -43,9 +48,7 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAd
     }
 
     public void moveItem(int oldPos, int newPos) {
-        String item = mData.get(oldPos);
-        mData.remove(oldPos);
-        mData.add(newPos, item);
+        Collections.swap(mData, oldPos, newPos);
         notifyItemMoved(oldPos, newPos);
     }
 
