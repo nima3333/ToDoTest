@@ -8,23 +8,26 @@
     android:padding="10dp">
     <!--android:background="@drawable/custom_ripple"-->
 
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="10dp"
-        android:layout_height="10dp"
-        android:layout_weight="1"
-        app:srcCompat="@drawable/drag_01" />
+    <CheckBox
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1" />
+
 
     <TextView
         android:id="@+id/tvAnimalName"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="20sp"
-        android:layout_weight="9"/>
-    <CheckBox
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layoutDirection="rtl"
-        android:layout_weight="1"/>
+        android:layout_height="match_parent"
+        android:layout_weight="8"
+        android:textSize="20sp" />
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="10dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:scaleType="centerCrop"
+        app:srcCompat="@drawable/drag_01"
+        android:layoutDirection="rtl"/>
 
 </LinearLayout>

@@ -64,7 +64,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 @Override
                 public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder source, RecyclerView.ViewHolder target) {
                     adapter.moveItem(source.getAdapterPosition(), target.getAdapterPosition());
-                    Toast.makeText(MainActivity.this, "TestMove", Toast.LENGTH_SHORT).show();
                     return true;
                 }
 
