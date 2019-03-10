@@ -3,9 +3,12 @@ package com.example.testrecyclerview;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -17,9 +20,11 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAd
 
     private List<String> mData;
     private ItemClickListener mClickListener;
+    private ItemTouchHelper mTouchHelper;
 
     // data is passed into the constructor
-    MyRecyclerViewAdapter(List<String> data) {
+    MyRecyclerViewAdapter(List<String> data, ItemTouchHelper touchHelper) {
+        this.mTouchHelper = touchHelper;
         this.mData = data;
     }
 
@@ -35,6 +40,16 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAd
     public void onBindViewHolder(ViewHolder holder, int position) {
         String animal = mData.get(position);
         holder.myTextView.setText(animal);
+        final ViewHolder temp = holder;
+        ((ViewHolder) holder).image.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (event.getActionMasked() == MotionEvent.ACTION_DOWN) {
+                    mTouchHelper.startDrag(temp);
+                }
+                return false;
+            }
+        });
     }
 
     // total number of rows
@@ -57,10 +72,12 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAd
     // stores and recycles views as they are scrolled off screen
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView myTextView;
+        ImageView image;
 
         ViewHolder(View itemView) {
             super(itemView);
             myTextView = itemView.findViewById(R.id.tvAnimalName);
+            image = itemView.findViewById(R.id.imageView);
             itemView.setOnClickListener(this);
         }
 
@@ -68,6 +85,8 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAd
         public void onClick(View view) {
             if (mClickListener != null) mClickListener.onItemClick(view, getAdapterPosition());
         }
+
+
     }
 
     // convenience method for getting data at click position

@@ -42,10 +42,33 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         animalNames.add("3");
         animalNames.add("4");
         animalNames.add("5");
-        adapter = new MyRecyclerViewAdapter(animalNames);
+
+        ItemTouchHelper.SimpleCallback simpleItemTouchCallback =
+                new ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP | ItemTouchHelper.DOWN, ItemTouchHelper.LEFT) {
+
+                    @Override
+                    public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder source, RecyclerView.ViewHolder target) {
+                        adapter.moveItem(source.getAdapterPosition(), target.getAdapterPosition());
+                        return true;
+                    }
+
+                    @Override
+                    public boolean isLongPressDragEnabled(){
+                        return false;
+                    }
+                    @Override
+                    public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
+                        adapter.removeItem(viewHolder.getAdapterPosition());
+                    }
+
+                };
+
+        itemTouchHelper = new ItemTouchHelper(simpleItemTouchCallback);
+
+        adapter = new MyRecyclerViewAdapter(animalNames, itemTouchHelper);
         //adapter.setClickListener(this);
         recyclerView.setAdapter(adapter);
-
+        itemTouchHelper.attachToRecyclerView(recyclerView);
         // separator
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(), mLayoutManager.getOrientation());
         recyclerView.addItemDecoration(dividerItemDecoration);
@@ -58,24 +81,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void initSwipe(){
-        ItemTouchHelper.SimpleCallback simpleItemTouchCallback =
-                new ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP | ItemTouchHelper.DOWN, ItemTouchHelper.LEFT) {
 
-                @Override
-                public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder source, RecyclerView.ViewHolder target) {
-                    adapter.moveItem(source.getAdapterPosition(), target.getAdapterPosition());
-                    return true;
-                }
-
-                @Override
-                public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
-                    adapter.removeItem(viewHolder.getAdapterPosition());
-                }
-
-        };
-
-        itemTouchHelper = new ItemTouchHelper(simpleItemTouchCallback);
-        itemTouchHelper.attachToRecyclerView(recyclerView);
         Toast.makeText(MainActivity.this, "Init", Toast.LENGTH_SHORT).show();
     }
 
