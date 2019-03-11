@@ -18,12 +18,12 @@ import java.util.List;
 
 public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAdapter.ViewHolder> {
 
-    private List<String> mData;
+    private List<Task> mData;
     private ItemClickListener mClickListener;
     private ItemTouchHelper mTouchHelper;
 
     // data is passed into the constructor
-    MyRecyclerViewAdapter(List<String> data, ItemTouchHelper touchHelper) {
+    MyRecyclerViewAdapter(List<Task> data, ItemTouchHelper touchHelper) {
         this.mTouchHelper = touchHelper;
         this.mData = data;
     }
@@ -38,7 +38,7 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAd
     // binds the data to the TextView in each row
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        String animal = mData.get(position);
+        String animal = mData.get(position).getName();
         holder.myTextView.setText(animal);
         final ViewHolder temp = holder;
         ((ViewHolder) holder).image.setOnTouchListener(new View.OnTouchListener() {
@@ -91,7 +91,7 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAd
 
     // convenience method for getting data at click position
     public String getItem(int id) {
-        return mData.get(id);
+        return mData.get(id).getName();
     }
 
     // allows clicks events to be caught
