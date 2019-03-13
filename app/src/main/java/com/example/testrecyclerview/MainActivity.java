@@ -37,11 +37,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         // data to populate the RecyclerView with
         ArrayList<Task> animalNames = new ArrayList<>();
-        animalNames.add(new Task("1"));
-        animalNames.add(new Task("2"));
-        animalNames.add(new Task("3"));
-        animalNames.add(new Task("4"));
-        animalNames.add(new Task("5"));
+        animalNames.add(new Task("1Aaa"));
+        animalNames.add(new Task("2Bbb"));
+        animalNames.add(new Task("3Ccc"));
+        animalNames.add(new Task("4Eee"));
+        animalNames.add(new Task("5Fff"));
 
         ItemTouchHelper.SimpleCallback simpleItemTouchCallback =
                 new ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP | ItemTouchHelper.DOWN, ItemTouchHelper.LEFT) {

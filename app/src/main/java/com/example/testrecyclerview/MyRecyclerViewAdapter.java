@@ -1,13 +1,17 @@
 package com.example.testrecyclerview;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
+import android.graphics.Paint;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -19,7 +23,6 @@ import java.util.List;
 public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAdapter.ViewHolder> {
 
     private List<Task> mData;
-    private ItemClickListener mClickListener;
     private ItemTouchHelper mTouchHelper;
 
     // data is passed into the constructor
@@ -36,9 +39,11 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAd
     }
 
     // binds the data to the TextView in each row
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        String animal = mData.get(position).getName();
+        final Task task = mData.get(position);
+        String animal = task.getName();
         holder.myTextView.setText(animal);
         final ViewHolder temp = holder;
         ((ViewHolder) holder).image.setOnTouchListener(new View.OnTouchListener() {
@@ -50,6 +55,20 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAd
                 return false;
             }
         });
+        ((ViewHolder) holder).mCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                task.setState(isChecked);
+                if(isChecked == true) {
+                    temp.myTextView.setPaintFlags(temp.myTextView.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+                }
+                else{
+                    temp.myTextView.setPaintFlags(temp.myTextView.getPaintFlags() & (~ Paint.STRIKE_THRU_TEXT_FLAG));
+                }
+            }
+        });
+
+
     }
 
     // total number of rows
@@ -73,19 +92,19 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAd
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView myTextView;
         ImageView image;
-
+        CheckBox mCheckBox;
+        int position;
         ViewHolder(View itemView) {
             super(itemView);
             myTextView = itemView.findViewById(R.id.tvAnimalName);
             image = itemView.findViewById(R.id.imageView);
+            mCheckBox = itemView.findViewById(R.id.cb);
             itemView.setOnClickListener(this);
         }
 
         @Override
         public void onClick(View view) {
-            if (mClickListener != null) mClickListener.onItemClick(view, getAdapterPosition());
         }
-
 
     }
 
@@ -94,10 +113,6 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAd
         return mData.get(id).getName();
     }
 
-    // allows clicks events to be caught
-    void setClickListener(ItemClickListener itemClickListener) {
-        this.mClickListener = itemClickListener;
-    }
 
     // parent activity will implement this method to respond to click events
     public interface ItemClickListener {
