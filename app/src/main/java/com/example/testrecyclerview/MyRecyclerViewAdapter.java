@@ -79,6 +79,7 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<ViewHolder> {
                         task.setState(isChecked);
                         if(isChecked == true) {
                             temp.myTextView.setPaintFlags(temp.myTextView.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+
                         }
                         else{
                             temp.myTextView.setPaintFlags(temp.myTextView.getPaintFlags() & (~ Paint.STRIKE_THRU_TEXT_FLAG));

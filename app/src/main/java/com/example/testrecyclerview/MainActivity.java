@@ -1,5 +1,6 @@
 package com.example.testrecyclerview;
 
+import android.content.Context;
 import android.graphics.Canvas;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -7,7 +8,13 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -25,7 +32,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
 
         initViews();
-        initSwipe();
     }
 
     private void initViews(){
@@ -42,7 +48,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         animalNames.add(new Task("3Ccc"));
         animalNames.add(new Task("4Eee"));
         animalNames.add(new Task("5Fff"));
-        animalNames.add(new AddItem("Lol"));
 
         ItemTouchHelper.SimpleCallback simpleItemTouchCallback =
                 new ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP | ItemTouchHelper.DOWN, ItemTouchHelper.LEFT) {
@@ -74,16 +79,31 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(), mLayoutManager.getOrientation());
         recyclerView.addItemDecoration(dividerItemDecoration);
 
+        final EditText edittext = (EditText)findViewById(R.id.editText);
+        final ArrayList<ListItem> temp = animalNames;
+        edittext.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if ((actionId & EditorInfo.IME_MASK_ACTION) != 0) {
+                    Toast.makeText(MainActivity.this, edittext.getText(), Toast.LENGTH_SHORT).show();
+                    temp.add(new Task(edittext.getText().toString()));
+                    adapter.notifyItemInserted(temp.size()-1);
+                    edittext.setText("");
+                    edittext.clearFocus();
+                    InputMethodManager imm = (InputMethodManager) v.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+                    return true;
+                }
+                else {
+                    return false;
+                }
+            }
+        });
         /**
          * animalNames.add("Goat22");
          * adapter.notifyDataSetChanged();
          **/
 
-    }
-
-    private void initSwipe(){
-
-        Toast.makeText(MainActivity.this, "Init", Toast.LENGTH_SHORT).show();
     }
 
     @Override
