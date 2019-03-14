@@ -42,6 +42,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         animalNames.add(new Task("3Ccc"));
         animalNames.add(new Task("4Eee"));
         animalNames.add(new Task("5Fff"));
+        animalNames.add(new AddItem("Lol"));
 
         ItemTouchHelper.SimpleCallback simpleItemTouchCallback =
                 new ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP | ItemTouchHelper.DOWN, ItemTouchHelper.LEFT) {
