@@ -36,7 +36,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         recyclerView.setLayoutManager(mLayoutManager);
 
         // data to populate the RecyclerView with
-        ArrayList<Task> animalNames = new ArrayList<>();
+        ArrayList<ListItem> animalNames = new ArrayList<>();
         animalNames.add(new Task("1Aaa"));
         animalNames.add(new Task("2Bbb"));
         animalNames.add(new Task("3Ccc"));

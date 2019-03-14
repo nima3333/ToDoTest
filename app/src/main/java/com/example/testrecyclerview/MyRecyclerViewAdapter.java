@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,11 +23,11 @@ import java.util.List;
 
 public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAdapter.ViewHolder> {
 
-    private List<Task> mData;
+    private List<ListItem> mData;
     private ItemTouchHelper mTouchHelper;
 
     // data is passed into the constructor
-    MyRecyclerViewAdapter(List<Task> data, ItemTouchHelper touchHelper) {
+    MyRecyclerViewAdapter(List<ListItem> data, ItemTouchHelper touchHelper) {
         this.mTouchHelper = touchHelper;
         this.mData = data;
     }
@@ -34,39 +35,61 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAd
     // inflates the row layout from xml when needed
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.row_layout, parent, false);
-        return new ViewHolder(view);
+        View view = null;
+        switch (viewType) {
+            case ListItem.TYPE_A:
+                view = LayoutInflater
+                        .from(parent.getContext())
+                        .inflate(R.layout.row_layout, parent, false);
+                return new ViewHolder(view);
+            case ListItem.TYPE_B:
+                view = LayoutInflater
+                        .from(parent.getContext())
+                        .inflate(R.layout.row_layout, parent, false);
+                return new ViewHolder(view);
+        }
+        return null;
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        return mData.get(position).getListItemType();
     }
 
     // binds the data to the TextView in each row
     @SuppressLint("ClickableViewAccessibility")
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        final Task task = mData.get(position);
-        String animal = task.getName();
-        holder.myTextView.setText(animal);
-        final ViewHolder temp = holder;
-        ((ViewHolder) holder).image.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                if (event.getActionMasked() == MotionEvent.ACTION_DOWN) {
-                    mTouchHelper.startDrag(temp);
-                }
-                return false;
-            }
-        });
-        ((ViewHolder) holder).mCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                task.setState(isChecked);
-                if(isChecked == true) {
-                    temp.myTextView.setPaintFlags(temp.myTextView.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-                }
-                else{
-                    temp.myTextView.setPaintFlags(temp.myTextView.getPaintFlags() & (~ Paint.STRIKE_THRU_TEXT_FLAG));
-                }
-            }
-        });
+        int viewType = getItemViewType(position);
+        switch (viewType){
+            case ListItem.TYPE_A:
+                final Task task = (Task)mData.get(position);
+                final ViewHolder temp = holder;
+                String text = task.getName();
+                holder.myTextView.setText(text);
+                ((ViewHolder) holder).image.setOnTouchListener(new View.OnTouchListener() {
+                    @Override
+                    public boolean onTouch(View v, MotionEvent event) {
+                        if (event.getActionMasked() == MotionEvent.ACTION_DOWN) {
+                            mTouchHelper.startDrag(temp);
+                        }
+                        return false;
+                    }
+                });
+                ((ViewHolder) holder).mCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                    @Override
+                    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                        task.setState(isChecked);
+                        if(isChecked == true) {
+                            temp.myTextView.setPaintFlags(temp.myTextView.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+                        }
+                        else{
+                            temp.myTextView.setPaintFlags(temp.myTextView.getPaintFlags() & (~ Paint.STRIKE_THRU_TEXT_FLAG));
+                        }
+                    }
+                });
+
+        }
 
 
     }
@@ -93,7 +116,6 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAd
         TextView myTextView;
         ImageView image;
         CheckBox mCheckBox;
-        int position;
         ViewHolder(View itemView) {
             super(itemView);
             myTextView = itemView.findViewById(R.id.tvAnimalName);
@@ -106,11 +128,6 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAd
         public void onClick(View view) {
         }
 
-    }
-
-    // convenience method for getting data at click position
-    public String getItem(int id) {
-        return mData.get(id).getName();
     }
 
 

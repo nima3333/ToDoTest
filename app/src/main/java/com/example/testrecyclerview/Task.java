@@ -1,6 +1,6 @@
 package com.example.testrecyclerview;
 
-public class Task {
+public class Task implements ListItem{
     private String name;
     private boolean state;
 
@@ -28,5 +28,10 @@ public class Task {
 
     public void setState(boolean state) {
         this.state = state;
+    }
+
+    @Override
+    public int getListItemType() {
+        return ListItem.TYPE_A;
     }
 }
