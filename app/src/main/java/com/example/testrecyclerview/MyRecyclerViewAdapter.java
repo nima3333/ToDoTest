@@ -62,15 +62,14 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<ViewHolder> {
             case ListItem.TYPE_A:
                 final Task task = (Task) taskList.get(position);
                 final ViewHolderA temp = (ViewHolderA) holder;
-                final int pos = position;
                 String text = task.getName();
                 Boolean state = task.getState();
                 temp.getMyTextView().setText(text);
-                temp.getmCheckBox().setOnCheckedChangeListener(null);
-                if (state==true){
+                if (state==true) {
                     temp.myTextView.setPaintFlags(temp.myTextView.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-                    temp.getmCheckBox().setChecked(true);
                 }
+                temp.getmCheckBox().setOnCheckedChangeListener(null);
+                temp.getmCheckBox().setChecked(state);
                 temp.getImage().setOnTouchListener(new View.OnTouchListener() {
                     @Override
                     public boolean onTouch(View v, MotionEvent event) {
@@ -84,9 +83,11 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<ViewHolder> {
                 temp.getmCheckBox().setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                     @Override
                     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                        //task.setState(isChecked);
+                        int i = temp.getAdapterPosition();
+                        int target = (isChecked ? 1 : 0) * (taskList.size()-1);
                         ((Task)taskList.get(temp.getAdapterPosition())).setState(isChecked);
-                        notifyItemChanged(temp.getAdapterPosition());
+                        taskList.add(target, taskList.remove(temp.getAdapterPosition()));
+                        notifyItemMoved(i, target);
                     }
                 });
 

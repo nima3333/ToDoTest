@@ -84,8 +84,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if ((actionId & EditorInfo.IME_MASK_ACTION) != 0) {
                     Toast.makeText(MainActivity.this, edittext.getText(), Toast.LENGTH_SHORT).show();
-                    temp.add(new Task(edittext.getText().toString()));
-                    adapter.notifyItemInserted(temp.size()-1);
+                    temp.add(0, new Task(edittext.getText().toString()));
+                    adapter.notifyItemInserted(0);
                     edittext.setText("");
                     edittext.clearFocus();
                     InputMethodManager imm = (InputMethodManager) v.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
