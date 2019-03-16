@@ -2,7 +2,6 @@ package com.example.testrecyclerview;
 
 import android.annotation.SuppressLint;
 import android.graphics.Paint;
-import android.support.design.widget.TextInputLayout;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
@@ -14,25 +13,26 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.Collections;
 import java.util.List;
 
 public class MyRecyclerViewAdapter extends RecyclerView.Adapter<ViewHolder> {
 
-    private List<ListItem> mData;
-    private ItemTouchHelper mTouchHelper;
+    private List<ListItem> taskList;
+    private ItemTouchHelper itemTouchHelper;
 
     // data is passed into the constructor
     MyRecyclerViewAdapter(List<ListItem> data, ItemTouchHelper touchHelper) {
-        this.mTouchHelper = touchHelper;
-        this.mData = data;
+        this.itemTouchHelper = touchHelper;
+        this.taskList = data;
     }
 
     // inflates the row layout from xml when needed
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = null;
+        View view;
         switch (viewType) {
             case ListItem.TYPE_A:
                 view = LayoutInflater
@@ -50,7 +50,7 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<ViewHolder> {
 
     @Override
     public int getItemViewType(int position) {
-        return mData.get(position).getListItemType();
+        return taskList.get(position).getListItemType();
     }
 
     // binds the data to the TextView in each row
@@ -60,32 +60,36 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<ViewHolder> {
         int viewType = getItemViewType(position);
         switch (viewType){
             case ListItem.TYPE_A:
-                final Task task = (Task)mData.get(position);
+                final Task task = (Task) taskList.get(position);
                 final ViewHolderA temp = (ViewHolderA) holder;
+                final int pos = position;
                 String text = task.getName();
+                Boolean state = task.getState();
                 temp.getMyTextView().setText(text);
+                temp.getmCheckBox().setOnCheckedChangeListener(null);
+                if (state==true){
+                    temp.myTextView.setPaintFlags(temp.myTextView.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+                    temp.getmCheckBox().setChecked(true);
+                }
                 temp.getImage().setOnTouchListener(new View.OnTouchListener() {
                     @Override
                     public boolean onTouch(View v, MotionEvent event) {
                         if (event.getActionMasked() == MotionEvent.ACTION_DOWN) {
-                            mTouchHelper.startDrag(temp);
+                            itemTouchHelper.startDrag(temp);
                         }
                         return false;
                     }
                 });
+
                 temp.getmCheckBox().setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                     @Override
                     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                        task.setState(isChecked);
-                        if(isChecked == true) {
-                            temp.myTextView.setPaintFlags(temp.myTextView.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-
-                        }
-                        else{
-                            temp.myTextView.setPaintFlags(temp.myTextView.getPaintFlags() & (~ Paint.STRIKE_THRU_TEXT_FLAG));
-                        }
+                        //task.setState(isChecked);
+                        ((Task)taskList.get(temp.getAdapterPosition())).setState(isChecked);
+                        notifyItemChanged(temp.getAdapterPosition());
                     }
                 });
+
 
         }
 
@@ -95,22 +99,32 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<ViewHolder> {
     // total number of rows
     @Override
     public int getItemCount() {
-        return mData.size();
+        return taskList.size();
     }
 
     public void moveItem(int oldPos, int newPos) {
-        Collections.swap(mData, oldPos, newPos);
+        //Collections.swap(taskList, oldPos, newPos);
+        //notifyItemMoved(oldPos, newPos);
+        if (oldPos < newPos) {
+            for (int i = oldPos; i < newPos; i++) {
+                Collections.swap(taskList, i, i + 1);
+            }
+        } else {
+            for (int i = oldPos; i > newPos; i--) {
+                Collections.swap(taskList, i, i - 1);
+            }
+        }
         notifyItemMoved(oldPos, newPos);
     }
 
     public void removeItem(int position) {
-        mData.remove(position);
+        taskList.remove(position);
         notifyItemRemoved(position);
-        notifyItemRangeChanged(position, mData.size());
+        notifyItemRangeChanged(position, taskList.size());
     }
 
     // stores and recycles views as they are scrolled off screen
-    public class ViewHolderA extends ViewHolder implements View.OnClickListener {
+    public class ViewHolderA extends ViewHolder {
         private TextView myTextView;
         private ImageView image;
         private CheckBox mCheckBox;
@@ -119,11 +133,6 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<ViewHolder> {
             myTextView = itemView.findViewById(R.id.tvAnimalName);
             image = itemView.findViewById(R.id.imageView);
             mCheckBox = itemView.findViewById(R.id.cb);
-            itemView.setOnClickListener(this);
-        }
-
-        @Override
-        public void onClick(View view) {
         }
 
         public TextView getMyTextView() {
@@ -137,6 +146,8 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<ViewHolder> {
         public CheckBox getmCheckBox() {
             return mCheckBox;
         }
+
+
     }
 
     public class ViewHolderB extends ViewHolder {

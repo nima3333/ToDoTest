@@ -1,7 +1,6 @@
 package com.example.testrecyclerview;
 
 import android.content.Context;
-import android.graphics.Canvas;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DividerItemDecoration;
@@ -13,7 +12,6 @@ import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -42,12 +40,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         recyclerView.setLayoutManager(mLayoutManager);
 
         // data to populate the RecyclerView with
-        ArrayList<ListItem> animalNames = new ArrayList<>();
-        animalNames.add(new Task("1Aaa"));
-        animalNames.add(new Task("2Bbb"));
-        animalNames.add(new Task("3Ccc"));
-        animalNames.add(new Task("4Eee"));
-        animalNames.add(new Task("5Fff"));
+        ArrayList<ListItem> taskList = new ArrayList<>();
+        taskList.add(new Task("1Aaa"));
+        taskList.add(new Task("2Bbb"));
+        taskList.add(new Task("3Ccc"));
+        taskList.add(new Task("4Eee"));
+        taskList.add(new Task("5Fff"));
 
         ItemTouchHelper.SimpleCallback simpleItemTouchCallback =
                 new ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP | ItemTouchHelper.DOWN, ItemTouchHelper.LEFT) {
@@ -62,6 +60,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     public boolean isLongPressDragEnabled(){
                         return false;
                     }
+
                     @Override
                     public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
                         adapter.removeItem(viewHolder.getAdapterPosition());
@@ -71,16 +70,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         itemTouchHelper = new ItemTouchHelper(simpleItemTouchCallback);
 
-        adapter = new MyRecyclerViewAdapter(animalNames, itemTouchHelper);
-        //adapter.setClickListener(this);
+        adapter = new MyRecyclerViewAdapter(taskList, itemTouchHelper);
         recyclerView.setAdapter(adapter);
         itemTouchHelper.attachToRecyclerView(recyclerView);
         // separator
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(), mLayoutManager.getOrientation());
         recyclerView.addItemDecoration(dividerItemDecoration);
 
-        final EditText edittext = (EditText)findViewById(R.id.editText);
-        final ArrayList<ListItem> temp = animalNames;
+        final EditText edittext = findViewById(R.id.editText);
+        final ArrayList<ListItem> temp = taskList;
         edittext.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
@@ -99,11 +97,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 }
             }
         });
-        /**
-         * animalNames.add("Goat22");
-         * adapter.notifyDataSetChanged();
-         **/
-
     }
 
     @Override

@@ -22,7 +22,7 @@ public class Task implements ListItem{
         this.name = name;
     }
 
-    public boolean setState() {
+    public boolean getState() {
         return state;
     }
 
