@@ -1,6 +1,8 @@
 package com.example.testrecyclerview;
 
 import android.content.Context;
+import android.content.Intent;
+import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DividerItemDecoration;
@@ -8,6 +10,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.KeyEvent;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
@@ -17,7 +20,7 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+public class TodoActivity extends AppCompatActivity implements View.OnClickListener {
 
     private MyRecyclerViewAdapter adapter;
     private RecyclerView recyclerView;
@@ -27,8 +30,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-
+        setContentView(R.layout.todo_main);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         initViews();
     }
 
@@ -83,7 +86,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if ((actionId & EditorInfo.IME_MASK_ACTION) != 0) {
-                    Toast.makeText(MainActivity.this, edittext.getText(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(TodoActivity.this, edittext.getText(), Toast.LENGTH_SHORT).show();
                     temp.add(0, new Task(edittext.getText().toString()));
                     adapter.notifyItemInserted(0);
                     edittext.setText("");
@@ -104,5 +107,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
-
+    @Override
+    public boolean onOptionsItemSelected(MenuItem menuItem)
+    {
+        Intent myIntent = new Intent(getApplicationContext(), MenuActivity.class);
+        startActivityForResult(myIntent, 0);
+        return true;
+    }
 }
+
