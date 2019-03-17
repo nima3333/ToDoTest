@@ -1,6 +1,7 @@
 package com.example.testrecyclerview;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.graphics.Paint;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
@@ -15,18 +16,21 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 public class MyRecyclerViewAdapter extends RecyclerView.Adapter<ViewHolder> {
 
-    private List<ListItem> taskList;
+    private ArrayList<ListItem> taskList;
     private ItemTouchHelper itemTouchHelper;
+    private Context context;
 
     // data is passed into the constructor
-    MyRecyclerViewAdapter(List<ListItem> data, ItemTouchHelper touchHelper) {
+    MyRecyclerViewAdapter(ArrayList<ListItem> data, ItemTouchHelper touchHelper, Context context) {
         this.itemTouchHelper = touchHelper;
         this.taskList = data;
+        this.context = context;
     }
 
     // inflates the row layout from xml when needed
@@ -60,14 +64,15 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<ViewHolder> {
         int viewType = getItemViewType(position);
         switch (viewType){
             case ListItem.TYPE_A:
-                final Task task = (Task) taskList.get(position);
+                final Task task = (Task)taskList.get(position);
                 final ViewHolderA temp = (ViewHolderA) holder;
                 String text = task.getName();
                 Boolean state = task.getState();
                 temp.getMyTextView().setText(text);
-                if (state==true) {
+                if (state) {
                     temp.myTextView.setPaintFlags(temp.myTextView.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
                 }
+
                 temp.getmCheckBox().setOnCheckedChangeListener(null);
                 temp.getmCheckBox().setChecked(state);
                 temp.getImage().setOnTouchListener(new View.OnTouchListener() {
@@ -87,14 +92,13 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<ViewHolder> {
                         int target = (isChecked ? 1 : 0) * (taskList.size()-1);
                         ((Task)taskList.get(temp.getAdapterPosition())).setState(isChecked);
                         taskList.add(target, taskList.remove(temp.getAdapterPosition()));
+                        FileHelper.writeData(taskList, context);
                         notifyItemMoved(i, target);
                     }
                 });
 
 
         }
-
-
     }
 
     // total number of rows
@@ -121,7 +125,7 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<ViewHolder> {
     public void removeItem(int position) {
         taskList.remove(position);
         notifyItemRemoved(position);
-        notifyItemRangeChanged(position, taskList.size());
+        //notifyItemRangeChanged(position, taskList.size());
     }
 
     // stores and recycles views as they are scrolled off screen

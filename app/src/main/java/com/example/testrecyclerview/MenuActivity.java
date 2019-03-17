@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.LinearLayout;
 
+import com.google.gson.Gson;
+
 public class MenuActivity extends AppCompatActivity {
 
     @Override
@@ -21,6 +23,7 @@ public class MenuActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent myIntent = new Intent(getApplicationContext(), TodoActivity.class);
+                myIntent.putExtra("data", new Gson().toJson(FileHelper.readData(getApplicationContext())));
                 startActivityForResult(myIntent, 0);
             }
         });
