@@ -1,6 +1,8 @@
 package com.example.testrecyclerview;
 
-public class AddItem implements ListItem{
+import java.io.Serializable;
+
+public class AddItem implements ListItem, Serializable {
     private String name;
 
     public AddItem(String name){

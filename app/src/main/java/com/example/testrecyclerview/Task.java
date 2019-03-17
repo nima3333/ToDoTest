@@ -1,6 +1,8 @@
 package com.example.testrecyclerview;
 
-public class Task implements ListItem{
+import java.io.Serializable;
+
+public class Task implements ListItem, Serializable {
     private String name;
     private boolean state;
 

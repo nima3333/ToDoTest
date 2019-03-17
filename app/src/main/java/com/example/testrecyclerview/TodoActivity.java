@@ -41,7 +41,9 @@ public class TodoActivity extends AppCompatActivity implements View.OnClickListe
         ArrayList<ListItem> tasks = new ArrayList<>();
         if (bundle != null) {
             tasks = new Gson().fromJson(bundle.getString("data"), new TypeToken<ArrayList<ListItem>>(){}.getType());
+            Toast.makeText(this, "Recuperation de "+Integer.toString(tasks.size())+" items", Toast.LENGTH_SHORT).show();
         }
+
         initViews(tasks);
     }
 
@@ -53,7 +55,7 @@ public class TodoActivity extends AppCompatActivity implements View.OnClickListe
         recyclerView.setLayoutManager(mLayoutManager);
 
         // data to populate the RecyclerView with
-        taskList.add(new Task("AutoAdd"));
+        taskList.add(new Task("Auto Add"));
 
         ItemTouchHelper.SimpleCallback simpleItemTouchCallback =
                 new ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP | ItemTouchHelper.DOWN, ItemTouchHelper.LEFT) {
@@ -91,14 +93,14 @@ public class TodoActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if ((actionId & EditorInfo.IME_MASK_ACTION) != 0) {
-                    Toast.makeText(TodoActivity.this, edittext.getText(), Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(TodoActivity.this, edittext.getText(), Toast.LENGTH_SHORT).show();
                     temp.add(0, new Task(edittext.getText().toString()));
-                    adapter.notifyItemInserted(0);
                     edittext.setText("");
                     edittext.clearFocus();
                     InputMethodManager imm = (InputMethodManager) v.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
                     imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
                     FileHelper.writeData(temp, getApplicationContext());
+                    adapter.notifyItemInserted(0);
                     return true;
                 }
                 else {
