@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -44,6 +44,14 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="Tâches restantes :" />
+
+                    <com.github.lzyzsd.circleprogress.DonutProgress
+                        android:layout_marginLeft="50dp"
+                        android:id="@+id/donut1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:donut_progress="30"/>
+
                 </LinearLayout>
 
                 <LinearLayout
@@ -69,6 +77,13 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="Tâches restantes :" />
+
+                    <com.github.lzyzsd.circleprogress.DonutProgress
+                        android:layout_marginLeft="50dp"
+                        android:id="@+id/donut2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:donut_progress="30"/>
                 </LinearLayout>
             </LinearLayout>
 
@@ -101,6 +116,13 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="Tâches restantes :" />
+
+                    <com.github.lzyzsd.circleprogress.DonutProgress
+                        android:layout_marginLeft="50dp"
+                        android:id="@+id/donut3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:donut_progress="30"/>
                 </LinearLayout>
 
                 <LinearLayout
@@ -126,6 +148,13 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="Tâches restantes :" />
+
+                    <com.github.lzyzsd.circleprogress.DonutProgress
+                        android:layout_marginLeft="50dp"
+                        android:id="@+id/donut4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:donut_progress="30"/>
                 </LinearLayout>
 
             </LinearLayout>

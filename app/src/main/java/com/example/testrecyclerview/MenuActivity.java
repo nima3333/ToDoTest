@@ -1,6 +1,7 @@
 package com.example.testrecyclerview;
 
 import android.content.Intent;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.KeyEvent;
@@ -15,24 +16,16 @@ import java.util.ArrayList;
 public class MenuActivity extends AppCompatActivity {
 
     @Override
-    protected void onResume() {
-        super.onResume();
-        //super.onCreate(savedInstanceState);
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        //getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        getSupportActionBar().hide();
+
         LinearLayout vue1 = findViewById(R.id.vue1);
         LinearLayout vue2 = findViewById(R.id.vue2);
         LinearLayout vue3 = findViewById(R.id.vue3);
         LinearLayout vue4 = findViewById(R.id.vue4);
-
-        ArrayList<Integer> liste = FileHelper.getSize(getApplicationContext());
-        TextView tv1 = findViewById(R.id.textView1);
-        TextView tv2 = findViewById(R.id.textView2);
-        TextView tv3 = findViewById(R.id.textView3);
-        TextView tv4 = findViewById(R.id.textView4);
-        tv1.setText(liste.get(0).toString());
-        tv2.setText(liste.get(1).toString());
-        tv3.setText(liste.get(2).toString());
-        tv4.setText(liste.get(3).toString());
 
         vue1.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -73,6 +66,23 @@ public class MenuActivity extends AppCompatActivity {
                 startActivityForResult(myIntent, 0);
             }
         });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        //super.onCreate(savedInstanceState);
+
+
+        ArrayList<Integer> liste = FileHelper.getSize(getApplicationContext());
+        TextView tv1 = findViewById(R.id.textView1);
+        TextView tv2 = findViewById(R.id.textView2);
+        TextView tv3 = findViewById(R.id.textView3);
+        TextView tv4 = findViewById(R.id.textView4);
+        tv1.setText(liste.get(0).toString());
+        tv2.setText(liste.get(1).toString());
+        tv3.setText(liste.get(2).toString());
+        tv4.setText(liste.get(3).toString());
     }
 
     @Override

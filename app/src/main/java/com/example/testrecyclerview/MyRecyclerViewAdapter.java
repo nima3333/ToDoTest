@@ -15,10 +15,8 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
 
 public class MyRecyclerViewAdapter extends RecyclerView.Adapter<ViewHolder> {
 
@@ -70,7 +68,7 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<ViewHolder> {
                 final ViewHolderA temp = (ViewHolderA) holder;
                 String text = task.getName();
                 Boolean state = task.getState();
-                temp.getMyTextView().setText(text + state.toString());
+                temp.getMyTextView().setText(text);
                 if (state) {
                     temp.myTextView.setPaintFlags(temp.myTextView.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
                 }
