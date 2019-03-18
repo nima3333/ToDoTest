@@ -73,7 +73,7 @@ public class MenuActivity extends AppCompatActivity {
         super.onResume();
         //super.onCreate(savedInstanceState);
 
-
+        //Gestion des tailles des listes
         ArrayList<Integer> liste = FileHelper.getSize(getApplicationContext());
         TextView tv1 = findViewById(R.id.textView1);
         TextView tv2 = findViewById(R.id.textView2);
@@ -83,6 +83,17 @@ public class MenuActivity extends AppCompatActivity {
         tv2.setText(liste.get(1).toString());
         tv3.setText(liste.get(2).toString());
         tv4.setText(liste.get(3).toString());
+
+        //Gestion des pourcentages des donuts
+        ArrayList<Float> percentages = FileHelper.getPercentages(getApplicationContext());
+        com.github.lzyzsd.circleprogress.DonutProgress donut1 = findViewById(R.id.donut1);
+        donut1.setProgress(percentages.get(0));
+        com.github.lzyzsd.circleprogress.DonutProgress donut2 = findViewById(R.id.donut2);
+        donut2.setProgress(percentages.get(1));
+        com.github.lzyzsd.circleprogress.DonutProgress donut3 = findViewById(R.id.donut3);
+        donut3.setProgress(percentages.get(2));
+        com.github.lzyzsd.circleprogress.DonutProgress donut4 = findViewById(R.id.donut4);
+        donut4.setProgress(percentages.get(3));
     }
 
     @Override

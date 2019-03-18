@@ -10,6 +10,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 public class FileHelper {
@@ -65,5 +66,31 @@ public class FileHelper {
             liste.add(temp.size());
         }
         return liste;
+    }
+
+    public static ArrayList<Float> getPercentages(Context context){
+        ArrayList<Float> liste = new ArrayList<>();
+        for(int i = 0; i<filename.size(); i++){
+            liste.add(getPercentage(context, i));
+        }
+        return liste;
+    }
+
+    private static float getPercentage(Context context, int indice){
+        ArrayList<Task> temp = readData(context, indice);
+        int total = 0, compteur = 0;
+        for(Task task : temp){
+            total++;
+            if (task.getState()){
+                compteur++;
+            }
+        }
+        if(total==0){
+            return 0.0f;
+        }
+        DecimalFormat df = new DecimalFormat("0.00");
+        float resultat = compteur/(float)total*100;
+        resultat = Float.valueOf(df.format(resultat));
+        return resultat;
     }
 }
