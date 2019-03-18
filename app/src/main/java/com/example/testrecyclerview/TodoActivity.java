@@ -23,6 +23,7 @@ import com.google.gson.reflect.TypeToken;
 
 import java.io.File;
 import java.lang.reflect.Array;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 
 public class TodoActivity extends AppCompatActivity implements View.OnClickListener {
@@ -37,17 +38,18 @@ public class TodoActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.todo_main);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        Bundle bundle = getIntent().getExtras();
-        ArrayList<ListItem> tasks = new ArrayList<>();
-        if (bundle != null) {
-            tasks = new Gson().fromJson(bundle.getString("data"), new TypeToken<ArrayList<ListItem>>(){}.getType());
-            Toast.makeText(this, "Recuperation de "+Integer.toString(tasks.size())+" items", Toast.LENGTH_SHORT).show();
+        //Bundle bundle = getIntent().getExtras();
+        ArrayList<Task> tasks = FileHelper.readData(getApplicationContext(), 0);
+        Toast.makeText(this, "Recuperation de "+Integer.toString(tasks.size())+" items", Toast.LENGTH_SHORT).show();
+        /**if (bundle != null) {
+            Type listType = new TypeToken<ArrayList<Task>>(){}.getType();
+            tasks = new Gson().fromJson(bundle.getString("data"), listType);
         }
-
+        **/
         initViews(tasks);
     }
 
-    private void initViews(ArrayList<ListItem> taskList){
+    private void initViews(ArrayList<Task> taskList){
         // set up the RecyclerView
         recyclerView = findViewById(R.id.rv);
         recyclerView.setHasFixedSize(true);
@@ -55,7 +57,7 @@ public class TodoActivity extends AppCompatActivity implements View.OnClickListe
         recyclerView.setLayoutManager(mLayoutManager);
 
         // data to populate the RecyclerView with
-        taskList.add(new Task("Auto Add"));
+        //taskList.add(new Task("Auto Add"));
 
         ItemTouchHelper.SimpleCallback simpleItemTouchCallback =
                 new ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP | ItemTouchHelper.DOWN, ItemTouchHelper.LEFT) {
@@ -88,7 +90,7 @@ public class TodoActivity extends AppCompatActivity implements View.OnClickListe
         recyclerView.addItemDecoration(dividerItemDecoration);
 
         final EditText edittext = findViewById(R.id.editText);
-        final ArrayList<ListItem> temp = taskList;
+        final ArrayList<Task> temp = taskList;
         edittext.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
@@ -99,7 +101,7 @@ public class TodoActivity extends AppCompatActivity implements View.OnClickListe
                     edittext.clearFocus();
                     InputMethodManager imm = (InputMethodManager) v.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
                     imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
-                    FileHelper.writeData(temp, getApplicationContext());
+                    FileHelper.writeData(temp, getApplicationContext(), 0);
                     adapter.notifyItemInserted(0);
                     return true;
                 }

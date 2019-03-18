@@ -22,12 +22,12 @@ import java.util.List;
 
 public class MyRecyclerViewAdapter extends RecyclerView.Adapter<ViewHolder> {
 
-    private ArrayList<ListItem> taskList;
+    private ArrayList<Task> taskList;
     private ItemTouchHelper itemTouchHelper;
     private Context context;
 
     // data is passed into the constructor
-    MyRecyclerViewAdapter(ArrayList<ListItem> data, ItemTouchHelper touchHelper, Context context) {
+    MyRecyclerViewAdapter(ArrayList<Task> data, ItemTouchHelper touchHelper, Context context) {
         this.itemTouchHelper = touchHelper;
         this.taskList = data;
         this.context = context;
@@ -92,7 +92,7 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<ViewHolder> {
                         int target = (isChecked ? 1 : 0) * (taskList.size()-1);
                         ((Task)taskList.get(temp.getAdapterPosition())).setState(isChecked);
                         taskList.add(target, taskList.remove(temp.getAdapterPosition()));
-                        FileHelper.writeData(taskList, context);
+                        FileHelper.writeData(taskList, context, 0);
                         notifyItemMoved(i, target);
                     }
                 });

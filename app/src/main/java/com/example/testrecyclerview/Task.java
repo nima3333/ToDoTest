@@ -2,7 +2,7 @@ package com.example.testrecyclerview;
 
 import java.io.Serializable;
 
-public class Task implements ListItem, Serializable {
+public class Task extends ListItem implements Serializable {
     private String name;
     private boolean state;
 
