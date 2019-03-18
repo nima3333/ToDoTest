@@ -31,21 +31,20 @@ public class TodoActivity extends AppCompatActivity implements View.OnClickListe
     private MyRecyclerViewAdapter adapter;
     private RecyclerView recyclerView;
     private ItemTouchHelper itemTouchHelper;
-
+    private int indice = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.todo_main);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        //Bundle bundle = getIntent().getExtras();
-        ArrayList<Task> tasks = FileHelper.readData(getApplicationContext(), 0);
-        Toast.makeText(this, "Recuperation de "+Integer.toString(tasks.size())+" items", Toast.LENGTH_SHORT).show();
-        /**if (bundle != null) {
-            Type listType = new TypeToken<ArrayList<Task>>(){}.getType();
-            tasks = new Gson().fromJson(bundle.getString("data"), listType);
+        Bundle bundle = getIntent().getExtras();
+        if (bundle != null) {
+            indice = bundle.getInt("vue");
+            //Toast.makeText(this, "Id bundle = "+ Integer.toString(indice), Toast.LENGTH_SHORT).show();
         }
-        **/
+        ArrayList<Task> tasks = FileHelper.readData(getApplicationContext(), indice);
+        //Toast.makeText(this, "Recuperation de "+Integer.toString(tasks.size())+" items", Toast.LENGTH_SHORT).show();
         initViews(tasks);
     }
 
@@ -82,7 +81,7 @@ public class TodoActivity extends AppCompatActivity implements View.OnClickListe
 
         itemTouchHelper = new ItemTouchHelper(simpleItemTouchCallback);
 
-        adapter = new MyRecyclerViewAdapter(taskList, itemTouchHelper, getApplicationContext());
+        adapter = new MyRecyclerViewAdapter(taskList, itemTouchHelper, getApplicationContext(), indice);
         recyclerView.setAdapter(adapter);
         itemTouchHelper.attachToRecyclerView(recyclerView);
         // separator
@@ -101,7 +100,7 @@ public class TodoActivity extends AppCompatActivity implements View.OnClickListe
                     edittext.clearFocus();
                     InputMethodManager imm = (InputMethodManager) v.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
                     imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
-                    FileHelper.writeData(temp, getApplicationContext(), 0);
+                    FileHelper.writeData(temp, getApplicationContext(), indice);
                     adapter.notifyItemInserted(0);
                     return true;
                 }
@@ -120,9 +119,18 @@ public class TodoActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public boolean onOptionsItemSelected(MenuItem menuItem)
     {
-        Intent myIntent = new Intent(getApplicationContext(), MenuActivity.class);
-        startActivityForResult(myIntent, 0);
+        finish();
         return true;
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event)  {
+        if (keyCode == KeyEvent.KEYCODE_BACK ) {
+            finish();
+            return true;
+        }
+
+        return super.onKeyDown(keyCode, event);
     }
 }
 

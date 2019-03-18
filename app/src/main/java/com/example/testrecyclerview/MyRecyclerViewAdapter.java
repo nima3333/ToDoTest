@@ -25,12 +25,14 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<ViewHolder> {
     private ArrayList<Task> taskList;
     private ItemTouchHelper itemTouchHelper;
     private Context context;
+    private int indice;
 
     // data is passed into the constructor
-    MyRecyclerViewAdapter(ArrayList<Task> data, ItemTouchHelper touchHelper, Context context) {
+    MyRecyclerViewAdapter(ArrayList<Task> data, ItemTouchHelper touchHelper, Context context, int indice) {
         this.itemTouchHelper = touchHelper;
         this.taskList = data;
         this.context = context;
+        this.indice = indice;
     }
 
     // inflates the row layout from xml when needed
@@ -68,7 +70,7 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<ViewHolder> {
                 final ViewHolderA temp = (ViewHolderA) holder;
                 String text = task.getName();
                 Boolean state = task.getState();
-                temp.getMyTextView().setText(text);
+                temp.getMyTextView().setText(text + state.toString());
                 if (state) {
                     temp.myTextView.setPaintFlags(temp.myTextView.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
                 }
@@ -90,9 +92,15 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<ViewHolder> {
                     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                         int i = temp.getAdapterPosition();
                         int target = (isChecked ? 1 : 0) * (taskList.size()-1);
+                        if (isChecked) {
+                            temp.myTextView.setPaintFlags(temp.myTextView.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+                        }
+                        else{
+                            temp.myTextView.setPaintFlags(temp.myTextView.getPaintFlags() & ~Paint.STRIKE_THRU_TEXT_FLAG);
+                        }
                         ((Task)taskList.get(temp.getAdapterPosition())).setState(isChecked);
                         taskList.add(target, taskList.remove(temp.getAdapterPosition()));
-                        FileHelper.writeData(taskList, context, 0);
+                        FileHelper.writeData(taskList, context, indice);
                         notifyItemMoved(i, target);
                     }
                 });
@@ -119,11 +127,13 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<ViewHolder> {
                 Collections.swap(taskList, i, i - 1);
             }
         }
+        FileHelper.writeData(taskList, context, indice);
         notifyItemMoved(oldPos, newPos);
     }
 
     public void removeItem(int position) {
         taskList.remove(position);
+        FileHelper.writeData(taskList, context, indice);
         notifyItemRemoved(position);
         //notifyItemRangeChanged(position, taskList.size());
     }

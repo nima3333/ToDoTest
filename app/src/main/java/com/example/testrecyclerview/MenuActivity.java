@@ -3,6 +3,7 @@ package com.example.testrecyclerview;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -14,8 +15,9 @@ import java.util.ArrayList;
 public class MenuActivity extends AppCompatActivity {
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    protected void onResume() {
+        super.onResume();
+        //super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         LinearLayout vue1 = findViewById(R.id.vue1);
         LinearLayout vue2 = findViewById(R.id.vue2);
@@ -36,10 +38,51 @@ public class MenuActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent myIntent = new Intent(getApplicationContext(), TodoActivity.class);
+                myIntent.putExtra("vue", 0);
+                //myIntent.putExtra("data", new Gson().toJson(FileHelper.readData(getApplicationContext())));
+                startActivityForResult(myIntent, 0);
+            }
+        });
+
+        vue2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent myIntent = new Intent(getApplicationContext(), TodoActivity.class);
                 myIntent.putExtra("vue", 1);
                 //myIntent.putExtra("data", new Gson().toJson(FileHelper.readData(getApplicationContext())));
                 startActivityForResult(myIntent, 0);
             }
         });
+
+        vue3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent myIntent = new Intent(getApplicationContext(), TodoActivity.class);
+                myIntent.putExtra("vue", 2);
+                //myIntent.putExtra("data", new Gson().toJson(FileHelper.readData(getApplicationContext())));
+                startActivityForResult(myIntent, 0);
+            }
+        });
+
+        vue4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent myIntent = new Intent(getApplicationContext(), TodoActivity.class);
+                myIntent.putExtra("vue", 3);
+                //myIntent.putExtra("data", new Gson().toJson(FileHelper.readData(getApplicationContext())));
+                startActivityForResult(myIntent, 0);
+            }
+        });
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event)  {
+        if (keyCode == KeyEvent.KEYCODE_BACK ) {
+            finish();
+            System.exit(0);
+            return true;
+        }
+
+        return super.onKeyDown(keyCode, event);
     }
 }

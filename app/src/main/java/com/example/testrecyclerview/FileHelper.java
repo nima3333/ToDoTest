@@ -28,14 +28,14 @@ public class FileHelper {
             ObjectOutputStream oos = new ObjectOutputStream(fos);
             oos.writeObject(items);
             oos.close();
-            Toast.makeText(context, "Ajout réussi", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(context, "Ajout réussi", Toast.LENGTH_SHORT).show();
         }
         catch(FileNotFoundException e){
-            Toast.makeText(context, "File not found", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(context, "File not found", Toast.LENGTH_SHORT).show();
         }
         catch(IOException e){
             Log.e("EUH", "Exception", e);
-            Toast.makeText(context, e.getMessage(), Toast.LENGTH_LONG).show();
+            //Toast.makeText(context, e.getMessage(), Toast.LENGTH_LONG).show();
         }
 
     }
