@@ -27,12 +27,12 @@ public class MenuActivity extends AppCompatActivity {
         LinearLayout vue3 = findViewById(R.id.vue3);
         LinearLayout vue4 = findViewById(R.id.vue4);
 
+        //Listener sur les vues
         vue1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent myIntent = new Intent(getApplicationContext(), TodoActivity.class);
                 myIntent.putExtra("vue", 0);
-                //myIntent.putExtra("data", new Gson().toJson(FileHelper.readData(getApplicationContext())));
                 startActivityForResult(myIntent, 0);
             }
         });
@@ -42,7 +42,6 @@ public class MenuActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent myIntent = new Intent(getApplicationContext(), TodoActivity.class);
                 myIntent.putExtra("vue", 1);
-                //myIntent.putExtra("data", new Gson().toJson(FileHelper.readData(getApplicationContext())));
                 startActivityForResult(myIntent, 0);
             }
         });
@@ -52,7 +51,6 @@ public class MenuActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent myIntent = new Intent(getApplicationContext(), TodoActivity.class);
                 myIntent.putExtra("vue", 2);
-                //myIntent.putExtra("data", new Gson().toJson(FileHelper.readData(getApplicationContext())));
                 startActivityForResult(myIntent, 0);
             }
         });
@@ -62,7 +60,6 @@ public class MenuActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent myIntent = new Intent(getApplicationContext(), TodoActivity.class);
                 myIntent.putExtra("vue", 3);
-                //myIntent.putExtra("data", new Gson().toJson(FileHelper.readData(getApplicationContext())));
                 startActivityForResult(myIntent, 0);
             }
         });
