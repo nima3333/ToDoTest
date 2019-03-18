@@ -160,14 +160,15 @@
             </LinearLayout>
         </LinearLayout>
 
-        <ImageView
-            android:id="@+id/imageView2"
+        <android.support.design.widget.FloatingActionButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            tools:srcCompat="@tools:sample/avatars"
-            android:elevation="1dp"/>
-
+            android:elevation="100dp"
+            android:id="@+id/fab"
+            app:rippleColor="@color/Blue"
+            app:fabSize="normal"
+            android:src="@drawable/ic_settings_black_24dp"/>
 
     </FrameLayout>
 

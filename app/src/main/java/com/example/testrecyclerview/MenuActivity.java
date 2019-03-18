@@ -2,6 +2,7 @@ package com.example.testrecyclerview;
 
 import android.content.Intent;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.KeyEvent;
@@ -61,6 +62,16 @@ public class MenuActivity extends AppCompatActivity {
                 Intent myIntent = new Intent(getApplicationContext(), TodoActivity.class);
                 myIntent.putExtra("vue", 3);
                 startActivityForResult(myIntent, 0);
+            }
+        });
+
+        FloatingActionButton fab = findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Click action
+                Intent intent = new Intent(getApplicationContext(), Setting.class);
+                startActivity(intent);
             }
         });
     }
